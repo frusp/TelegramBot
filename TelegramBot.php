@@ -1,5 +1,4 @@
 <?php
-
     // check if cURL is installed
     if (!function_exists('curl_init')){
         die('Aborting: cURL not installed!');
@@ -18,33 +17,28 @@ class TelegramBot {
 
 	private static function raw_send ($bot_name, $cert_file, $api_url, $bot_token, $command, $data = null) {
 		$curl_options = array(
-							CURLOPT_RETURNTRANSFER => true,     // return web page
-							CURLOPT_HEADER         => false,    // don't return headers
-							CURLOPT_FOLLOWLOCATION => true,     // follow redirects
-							CURLOPT_ENCODING       => "",       // handle all encodings
-							CURLOPT_USERAGENT      => $bot_name,    // who am i
-							CURLOPT_AUTOREFERER    => true,     // set referer on redirect
-							CURLOPT_CONNECTTIMEOUT => 120,      // timeout on connect
-							CURLOPT_TIMEOUT        => 120,      // timeout on response
-							CURLOPT_MAXREDIRS      => 10,       // stop after 10 redirects
-							CURLOPT_SSL_VERIFYPEER => true,
-							CURLOPT_CAINFO         => $cert_file
-						);
-
+			CURLOPT_RETURNTRANSFER => true,     // return web page
+			CURLOPT_HEADER         => false,    // don't return headers
+			CURLOPT_FOLLOWLOCATION => true,     // follow redirects
+			CURLOPT_ENCODING       => "",       // handle all encodings
+			CURLOPT_USERAGENT      => $bot_name,    // who am i
+			CURLOPT_AUTOREFERER    => true,     // set referer on redirect
+			CURLOPT_CONNECTTIMEOUT => 120,      // timeout on connect
+			CURLOPT_TIMEOUT        => 120,      // timeout on response
+			CURLOPT_MAXREDIRS      => 10,       // stop after 10 redirects
+			CURLOPT_SSL_VERIFYPEER => true,
+			CURLOPT_CAINFO         => $cert_file
+		);
 		$curl = curl_init(  $api_url . $bot_token . "/" . $command );
-			curl_setopt_array( $curl, $curl_options );
-
-			if ( is_array($data) && count($data) > 0 ) {
-				curl_setopt($curl, CURLOPT_POST, true );
-				curl_setopt($curl, CURLOPT_POSTFIELDS, $data );
-			}
-			
-			$result = curl_exec( $curl );
-
-			$err     = curl_errno( $curl );
-			$errmsg  = curl_error( $curl );
-			$header  = curl_getinfo( $curl );
-
+		curl_setopt_array( $curl, $curl_options );
+		if ( is_array($data) && count($data) > 0 ) {
+			curl_setopt($curl, CURLOPT_POST, true );
+			curl_setopt($curl, CURLOPT_POSTFIELDS, $data );
+		}
+		$result = curl_exec( $curl );
+		$err     = curl_errno( $curl );
+		$errmsg  = curl_error( $curl );
+		$header  = curl_getinfo( $curl );
 		curl_close( $curl );
 		return $result;
 	}
@@ -76,30 +70,39 @@ class TelegramBot {
 
 	public function setWebhook ($url, $certificatePath) {
 		$file_name_with_full_path = realpath('./'.$certificatePath);
-		
 		$fields = array( 'url' => $url,
-						 'certificate' => '@'.$file_name_with_full_path
-						);
-						
+				 'certificate' => '@'.$file_name_with_full_path
+				);
+
 		$content = $this->send_command( "setWebhook", $fields );
 		return $content;
 	}
 
 	public function unsetWebhook () {
 		$fields = array( 'url' => '',
-						 'certificate' => ''
-						);
-						
+				 'certificate' => ''
+				);
+
 		$content = $this->send_command( "setWebhook", $fields );
 		return $content;
 	}
 
 	public function sendMessage ($chat_id, $text) {
 		$fields = array( 'chat_id' => $chat_id,
-						 'text' => $text
+				 'text' => $text
 						);
 
 		$content = $this->send_command( "sendMessage", $fields );
+		return $content;
+	}
+
+	public function sendLocation ($chat_id, $lat, $lon) {
+		$fields = array( 'chat_id' => $chat_id,
+				 'latitude' => $lat,
+				 'longitude' => $lon
+		);
+
+		$content = $this->send_command( "sendLocation", $fields );
 		return $content;
 	}
 
