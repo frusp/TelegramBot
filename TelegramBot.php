@@ -3,7 +3,7 @@
     if (!function_exists('curl_init')){
         die('Aborting: cURL not installed!');
     }
-
+//a
 class TelegramBot {
 	private $BOTNAME = "bot";
 	private $API_URL = "https://api.telegram.org/bot";
