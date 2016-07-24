@@ -1,4 +1,14 @@
 <?php
+/*
+ * TelegramBot
+ * 
+ * Version 0.1
+ *
+ * 2016-07-23
+ * 
+ * by Frusp & fcisoft
+ */
+
     // check if cURL is installed
     if (!function_exists('curl_init')){
         die('Aborting: cURL not installed!');
