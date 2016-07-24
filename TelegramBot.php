@@ -3,7 +3,7 @@
     if (!function_exists('curl_init')){
         die('Aborting: cURL not installed!');
     }
-//a
+
 class TelegramBot {
 	private $BOTNAME = "bot";
 	private $API_URL = "https://api.telegram.org/bot";
@@ -100,7 +100,7 @@ class TelegramBot {
 		$fields = array( 'chat_id' => $chat_id,
 				 'latitude' => $lat,
 				 'longitude' => $lon
-		);
+	);
 
 		$content = $this->send_command( "sendLocation", $fields );
 		return $content;
