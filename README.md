@@ -2,7 +2,7 @@
 
 ## Example code
 
-  require "TelegramBot.php";
+  	require "TelegramBot.php";
 
 	$bot = new TelegramBot( "YOUR BOT ID HERE", "GoDaddy.crt" );
 
